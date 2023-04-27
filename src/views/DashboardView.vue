@@ -6,7 +6,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div v-for="(value, key) in choices" :key="key" class="bg-gray-200 rounded-lg shadow-md overflow-hidden" :class="{ 'h-16': !isOpen(key), 'h-auto': isOpen(key) }">
           <div class="p-4">
-            <button @click="toggleGraph(key)" class="block font-semibold text-lg mb-2 hover:text-green-500 transition-colors duration-300">{{ value[0].toString() }}</button>
+            <button @click="toggleGraph(key)" class="block font-semibold text-lg mb-2 hover:text-purple-500 transition-colors duration-300">{{ value[0].toString() }}</button>
             <div class="overflow-hidden" :style="{ maxHeight: isOpen(key) ? 'none' : '0' }">
               <div class="p-4" v-if="isOpen(key)">
                 <ChoiceGraph :choices="choices.get(value[0].toString())" />
