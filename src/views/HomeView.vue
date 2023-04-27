@@ -3,7 +3,8 @@
     <header class="bg-white py-4">
       <div class="container mx-auto px-4 flex justify-between items-center">
         <h1 class="text-2xl font-bold headerText">Gemeente Amsterdam</h1>
-        <router-link to="/login" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">Log in</router-link>
+        <router-link v-if="!authStore.isAuthenticated" to="/login" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">Log in</router-link>
+        <router-link v-if="authStore.isAuthenticated" to="/dashboard" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">Dashboard</router-link>
       </div>
     </header>
 
@@ -34,9 +35,10 @@ import Choice from "@/api/records/Choice";
 import Dashboard from "@/views/DashboardView.vue";
 import router from "@/router";
 import {RouteTypes} from "@/router/RouteTypes";
+import {useAuthStore} from "@/store/AuthStore";
 
 // ref
-
+const authStore = useAuthStore();
 
 
 
