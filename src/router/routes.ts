@@ -24,5 +24,13 @@ export default [
     meta: {
         auth: false
     }
+  },
+  {
+    path: RouteTypes.PLAYER.path,
+    name: RouteTypes.PLAYER.name,
+    component: () => import("@/views/PlayerView.vue"),
+    meta: {
+        auth: true
+    }
   }
 ]

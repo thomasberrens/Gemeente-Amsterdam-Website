@@ -3,6 +3,7 @@ import ApiRoutes from "@/api/ApiRoutes";
 import Choice from "@/api/records/Choice";
 import AuthenticationToken from "@/api/records/AuthenticationToken";
 import {useAuthStore} from "@/store/AuthStore";
+import PlayerInfo from "@/api/records/PlayerInfo";
 
 interface UrlParameter {
     name: string;
@@ -42,6 +43,14 @@ const ApiHandler = new class {
 
     public async getChoicesMade(): Promise<Choice[]> {
         return this.sendGetRequest<Choice[]>(ApiRoutes.GET_ALL_CHOICES)
+    }
+
+    public async getAllPlayerInfos(): Promise<PlayerInfo[]> {
+        return this.sendGetRequest<PlayerInfo[]>(ApiRoutes.GET_ALL_PLAYERS);
+    }
+
+    public async getPlayerInfo(uuid: string): Promise<PlayerInfo> {
+        return this.sendGetRequest<PlayerInfo>(ApiRoutes.GET_PLAYER_INFO.replace("{uuid}", uuid));
     }
 
     async postLogin(email: string, password: string): Promise<AuthenticationToken> {
