@@ -7,7 +7,9 @@ enum ApiRoutes {
 
     GET_ALL_PLAYERS = 'playerinfo/get/all',
 
-    GET_PLAYER_INFO = 'playerinfo/get/{uuid}'
+    GET_PLAYER_INFO = 'playerinfo/get/{uuid}',
+
+    CREATE_PLAYER = 'playerinfo/create',
 }
 
 export default ApiRoutes;

@@ -49,6 +49,10 @@ const ApiHandler = new class {
         return this.sendGetRequest<PlayerInfo[]>(ApiRoutes.GET_ALL_PLAYERS);
     }
 
+    public async createPlayerInfo(username: string): Promise<PlayerInfo> {
+        return this.sendPostRequest<PlayerInfo>(ApiRoutes.CREATE_PLAYER, {username: username});
+    }
+
     public async getPlayerInfo(uuid: string): Promise<PlayerInfo> {
         return this.sendGetRequest<PlayerInfo>(ApiRoutes.GET_PLAYER_INFO.replace("{uuid}", uuid));
     }

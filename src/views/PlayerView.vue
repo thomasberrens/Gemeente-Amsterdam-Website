@@ -1,5 +1,5 @@
 <template>
-  <div class="flexbox flex-col md:flex-row">
+  <div v-if="!!playerInfo" class="flexbox flex-col md:flex-row">
     <div class="md:w-1/4 p-4">
       <div class="bg-gray-200 rounded-lg shadow-lg overflow-hidden">
         <div class="p-4">
