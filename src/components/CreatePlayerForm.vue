@@ -23,6 +23,7 @@
 
 import {ref} from "vue";
 import ApiHandler from "@/api/ApiHandler";
+import PlayerInfoDTO from "@/api/records/PlayerInfoDTO";
 
 interface Props {
   visible: boolean;
@@ -39,7 +40,9 @@ const username = ref<string>("");
 
 const createPlayer = async () => {
 
-  await ApiHandler.createPlayerInfo(username.value).then((response) => {
+  const playerInfo = new PlayerInfoDTO(username.value);
+
+  await ApiHandler.createPlayerInfo(playerInfo).then((response) => {
     console.log(response);
     emit("update", response);
   }).catch((error) => {

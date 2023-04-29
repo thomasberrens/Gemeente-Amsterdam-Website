@@ -10,6 +10,10 @@ enum ApiRoutes {
     GET_PLAYER_INFO = 'playerinfo/get/{uuid}',
 
     CREATE_PLAYER = 'playerinfo/create',
+
+    DELETE_PLAYER = 'playerinfo/delete/{uuid}',
+
+    EDIT_PLAYER = 'playerinfo/update/{uuid}',
 }
 
 export default ApiRoutes;

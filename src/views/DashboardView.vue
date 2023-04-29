@@ -5,7 +5,7 @@
 
       <div class="flex flex-wrap justify-between mb-4">
         <div class="mb-2 md:mb-0 flex-grow w-full md:w-auto">
-          <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-lg transition-colors duration-300 w-full md:w-auto" @click="showCreatePlayerForm = true">
+          <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-lg transition-colors duration-300 w-full md:w-auto" @click="createPlayerForm.visible = true">
             Create Player
           </button>
         </div>
@@ -23,9 +23,17 @@
 
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div v-for="(value, key) in displayedPlayers" :key="key" class="bg-gray-200 rounded-lg shadow-md overflow-hidden" :class="{ 'h-16': !isOpen(key), 'h-auto': isOpen(key) }">
-          <div class="p-4">
-            <button @click="goToPlayerView(value.uuid)" class="block font-semibold text-lg mb-2 hover:text-purple-500 transition-colors duration-300">{{ value.username }}</button>
+        <div v-for="(value, key) in displayedPlayers" :key="key" class="bg-gray-200 rounded-lg shadow-md overflow-hidden h-16">
+          <div class="p-4 flex justify-between items-center">
+            <button @click="goToPlayerView(value.uuid)" class="font-semibold text-lg mb-2 hover:text-purple-500 transition-colors duration-300">{{ value.username }}</button>
+            <div>
+              <button class="bg-red-500 p-1 rounded inline-flex items-center mr-4" @click="createDeletePlayerForm(value)">
+                <TrashIcon class="h-4 w-4" />
+              </button>
+              <button class="bg-orange-300 p-1 rounded inline-flex items-center">
+                <PencilIcon class="h-4 w-4" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -33,7 +41,9 @@
 
     <NotificationComponent :notification="notificationState.notification"/>
   </div>
-  <CreatePlayerForm :visible="showCreatePlayerForm" @close="updatePlayers" @update="showNotification" ></CreatePlayerForm>
+  <FormView :form="createPlayerForm"></FormView>
+  <FormView v-if="!!deletePlayerForm" :form="deletePlayerForm"></FormView>
+<!--  <CreatePlayerForm :visible="showCreatePlayerForm" @close="updatePlayers" @update="showNotification" ></CreatePlayerForm>-->
 </template>
 
 <script setup lang="ts">
@@ -42,10 +52,18 @@ import ApiHandler from "@/api/ApiHandler";
 import PlayerInfo from "@/api/records/PlayerInfo";
 import {RouteTypes} from "@/router/RouteTypes";
 import {useRouter} from "vue-router";
-import CreatePlayerForm from "@/components/CreatePlayerForm.vue";
+import CreatePlayerForm from "@/store/form/CreatePlayerForm";
 import NotificationComponent from "@/components/NotificationComponent.vue";
 import Notification from "@/store/notification/Notification";
 import CreatedPlayerNotification from "@/store/notification/CreatedPlayerNotification";
+import FormView from "@/components/FormView.vue";
+import TrashIcon from "@/assets/icons/TrashIcon.svg"
+import PencilIcon from "@/assets/icons/PencilIcon.svg"
+import Form from "@/store/form/Form";
+import DeletePlayerForm from "@/store/form/DeletePlayerForm";
+import playerInfo from "@/api/records/PlayerInfo";
+import DeletedPlayerNotification from "@/store/notification/DeletedPlayerNotification";
+
 
 const router = useRouter();
 
@@ -53,13 +71,14 @@ const notificationState = reactive({
   notification: null as Notification | null
 });
 
-const showCreatePlayerForm = ref<boolean>(false);
+const createPlayerForm = ref(new CreatePlayerForm());
+
+const deletePlayerForm = ref<DeletePlayerForm | undefined>(undefined);
+
 
 const allPlayers = ref<PlayerInfo[]>([]);
 const displayedPlayers = ref<PlayerInfo[]>([]);
 const searchInput = ref<string>('');
-
-const openGraphs = ref<Set<string>>(new Set<string>());
 
 const filterPlayers = () => {
   if (searchInput.value.trim() === '') {
@@ -70,6 +89,28 @@ const filterPlayers = () => {
   }
 };
 
+const createDeletePlayerForm = (playerInfo: PlayerInfo) => {
+  const newDeletePlayerForm = new DeletePlayerForm(playerInfo);
+
+  deletePlayerForm.value = newDeletePlayerForm;
+
+  newDeletePlayerForm.onDelete = onPlayerDelete;
+
+  // this is necessary to trigger the reactivity of the deletePlayerForm
+  //@ts-ignore
+  newDeletePlayerForm.onFormClosed = () => deletePlayerForm.value.visible = false;
+
+  newDeletePlayerForm.visible = true;
+};
+
+const onPlayerDelete = (playerInfo: PlayerInfo) => {
+  updatePlayers();
+  deletePlayerForm.value = undefined;
+
+  showNotification(new DeletedPlayerNotification(playerInfo));
+}
+
+
 const closeNotification = () => {
   const notification = notificationState.notification;
 
@@ -77,34 +118,26 @@ const closeNotification = () => {
     notification.visible = false;
   }
 
- // notificationState.notification = null;
+  // notificationState.notification = null;
 };
 
-const showNotification = (newPlayer: PlayerInfo) => {
-
-  notificationState.notification = new CreatedPlayerNotification(newPlayer, router);
+const showNotification = (notification: Notification) => {
+  notificationState.notification = notification;
 
   setTimeout(() => {
     closeNotification();
   }, 4000);
 };
 
-const toggleGraph = (username: string) => {
-  if (openGraphs.value.has(username)) {
-    openGraphs.value.delete(username);
-  } else {
-    openGraphs.value.add(username);
-  }
-};
 
-const goToPlayerView = (uuid: string) => {
-
-  router.push(RouteTypes.PLAYER.path.replace(":uuid", uuid));
+const onPlayerCreated = (playerInfo: PlayerInfo) => {
+  updatePlayers();
+  showNotification(new CreatedPlayerNotification(playerInfo, router));
 }
 
-const isOpen = (username: string) => {
-  return openGraphs.value.has(username);
-};
+const goToPlayerView = (uuid: string) => {
+  router.push(RouteTypes.PLAYER.path.replace(":uuid", uuid));
+}
 
 const updatePlayers = () => {
    ApiHandler.getAllPlayerInfos().then((response) => {
@@ -112,8 +145,6 @@ const updatePlayers = () => {
     allPlayers.value = response;
     filterPlayers();
    });
-
-  showCreatePlayerForm.value = false;
   };
 
 
@@ -126,6 +157,9 @@ onBeforeMount(async () => {
     allPlayers.value = response;
     filterPlayers();
   });
+
+  createPlayerForm.value.onPlayerCreated = onPlayerCreated;
+
 
 });
 

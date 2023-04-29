@@ -2,13 +2,14 @@ import Notification from "@/store/notification/Notification";
 import PlayerInfo from "@/api/records/PlayerInfo";
 import {RouteTypes} from "@/router/RouteTypes";
 import {Router} from "vue-router";
+import NotificationType from "@/store/notification/NotificationType";
 
 
 export default class CreatedPlayerNotification implements Notification {
 
     labels: string[] = ["Name: {0}", "PlayerID: {0}"];
     title: string = "Created player.";
-    type: string = "success";
+    type: NotificationType = NotificationType.SUCCESS;
     visible: boolean = true;
 
     playerId: string = "";

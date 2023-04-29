@@ -3,8 +3,8 @@
     <div
         v-if="!!notification && notification.visible"
         :class="[
-        'fixed top-4 right-4 p-4 rounded-lg shadow-md cursor-pointer',
-        notification.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white',
+        'fixed top-4 right-4 p-4 rounded-lg shadow-md cursor-pointer text-white',
+        notificationTypes.get(notification.type),
       ]"
         @click="notification.onClick()"
     >
@@ -20,6 +20,7 @@
 
 import {computed, onMounted, ref} from "vue";
 import Notification from "@/store/notification/Notification";
+import NotificationType from "@/store/notification/NotificationType";
 
 interface Props {
   notification: Notification;
@@ -28,6 +29,12 @@ interface Props {
 const {notification} = defineProps<Props>();
 
 const emit = defineEmits(["onClick"]);
+
+const notificationTypes = new Map<NotificationType, string>([
+  [NotificationType.SUCCESS, "bg-green-500"],
+  [NotificationType.DELETED, "bg-red-500"],
+  [NotificationType.EDITED, "bg-yellow-500"],
+]);
 
 
 const onClick = () => {

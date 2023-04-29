@@ -4,6 +4,7 @@ import Choice from "@/api/records/Choice";
 import AuthenticationToken from "@/api/records/AuthenticationToken";
 import {useAuthStore} from "@/store/AuthStore";
 import PlayerInfo from "@/api/records/PlayerInfo";
+import PlayerInfoDTO from "@/api/records/PlayerInfoDTO";
 
 interface UrlParameter {
     name: string;
@@ -49,8 +50,8 @@ const ApiHandler = new class {
         return this.sendGetRequest<PlayerInfo[]>(ApiRoutes.GET_ALL_PLAYERS);
     }
 
-    public async createPlayerInfo(username: string): Promise<PlayerInfo> {
-        return this.sendPostRequest<PlayerInfo>(ApiRoutes.CREATE_PLAYER, {username: username});
+    public async createPlayerInfo(playerInfo: PlayerInfoDTO): Promise<PlayerInfo> {
+        return this.sendPostRequest<PlayerInfo>(ApiRoutes.CREATE_PLAYER, playerInfo);
     }
 
     public async getPlayerInfo(uuid: string): Promise<PlayerInfo> {
@@ -107,6 +108,14 @@ const ApiHandler = new class {
         return this.sendGetRequest<AuthenticationToken>(ApiRoutes.REFRESH_TOKEN);
     }
 
+    public async deletePlayerInfo(uuid: string): Promise<void> {
+        return this.sendDeleteRequest<void>(ApiRoutes.DELETE_PLAYER.replace("{uuid}", uuid));
+    }
+
+    public async editPlayerInfo(uuid: string, newPlayerInfo: PlayerInfoDTO): Promise<PlayerInfo> {
+        return this.sendPutRequest<PlayerInfo>(ApiRoutes.EDIT_PLAYER.replace("{uuid}", uuid), newPlayerInfo);
+    }
+
     public async sendPostRequest<R = void, D = any>(route: string, data?: D, urlEncoded = false): Promise<R> {
         const response = await axios.post(this.getBaseUrl() + route, data, { headers: this.createContentTypeRequestHeader(urlEncoded) })
         return Promise.resolve(response.data);
@@ -121,6 +130,16 @@ const ApiHandler = new class {
         const parametersUrl = parameters?.map(parameter => parameter.name + "=" + parameter.value)?.join("&")
         const response = await axios.get(this.getBaseUrl() + route + (!!parametersUrl ? "?" + parametersUrl : ""), config)
         return Promise.resolve(response);
+    }
+
+    public async sendDeleteRequest<R = void, D = any>(route: string, data?: D, urlEncoded = false): Promise<R> {
+        const response = await axios.delete(this.getBaseUrl() + route, { data: data, headers: this.createContentTypeRequestHeader(urlEncoded) })
+        return Promise.resolve(response.data);
+    }
+
+    public async sendPutRequest<R = void, D = any>(route: string, data?: D, urlEncoded = false): Promise<R> {
+        const response = await axios.put(this.getBaseUrl() + route, data, { headers: this.createContentTypeRequestHeader(urlEncoded) });
+        return Promise.resolve(response.data);
     }
 
 
