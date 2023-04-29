@@ -3,14 +3,24 @@
     <div class="max-w-7xl mx-auto">
       <h1 class="text-4xl font-bold mb-4 dashboardTitle">Gemeente Amsterdam Dashboard</h1>
 
-      <div class="flex justify-start mb-4">
+      <div class="flex justify-between mb-4">
         <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-lg transition-colors duration-300" @click="showCreatePlayerForm = true">
           Create Player
         </button>
+        <div class="flex items-center w-full max-w-xs bg-white border border-gray-300 rounded shadow-lg">
+          <div class="bg-gray-100 text-gray-500 rounded-l p-2">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="h-4 w-4" stroke-width="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <input class="appearance-none pl-2 pr-3 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-full" type="text" placeholder="Search" v-model="searchInput" @input="filterPlayers">
+        </div>
       </div>
 
+
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div v-for="(value, key) in players" :key="key" class="bg-gray-200 rounded-lg shadow-md overflow-hidden" :class="{ 'h-16': !isOpen(key), 'h-auto': isOpen(key) }">
+        <div v-for="(value, key) in displayedPlayers" :key="key" class="bg-gray-200 rounded-lg shadow-md overflow-hidden" :class="{ 'h-16': !isOpen(key), 'h-auto': isOpen(key) }">
           <div class="p-4">
             <button @click="goToPlayerView(value.uuid)" class="block font-semibold text-lg mb-2 hover:text-purple-500 transition-colors duration-300">{{ value.username }}</button>
           </div>
@@ -20,7 +30,6 @@
 
     <NotificationComponent :notification="notificationState.notification"/>
   </div>
-
   <CreatePlayerForm :visible="showCreatePlayerForm" @close="updatePlayers" @update="showNotification" ></CreatePlayerForm>
 </template>
 
@@ -43,19 +52,29 @@ const notificationState = reactive({
 
 const showCreatePlayerForm = ref<boolean>(false);
 
-const players = ref<PlayerInfo[]>([]);
+const allPlayers = ref<PlayerInfo[]>([]);
+const displayedPlayers = ref<PlayerInfo[]>([]);
+const searchInput = ref<string>('');
 
 const openGraphs = ref<Set<string>>(new Set<string>());
 
+const filterPlayers = () => {
+  if (searchInput.value.trim() === '') {
+    displayedPlayers.value = [...allPlayers.value];
+  } else {
+    const regex = new RegExp(searchInput.value, 'i');
+    displayedPlayers.value = allPlayers.value.filter(player => regex.test(player.username));
+  }
+};
 
-const closeToast = () => {
+const closeNotification = () => {
   const notification = notificationState.notification;
 
   if (notification) {
     notification.visible = false;
   }
 
-  notificationState.notification = null;
+ // notificationState.notification = null;
 };
 
 const showNotification = (newPlayer: PlayerInfo) => {
@@ -63,7 +82,7 @@ const showNotification = (newPlayer: PlayerInfo) => {
   notificationState.notification = new CreatedPlayerNotification(newPlayer, router);
 
   setTimeout(() => {
-    closeToast();
+    closeNotification();
   }, 4000);
 };
 
@@ -87,7 +106,8 @@ const isOpen = (username: string) => {
 const updatePlayers = () => {
    ApiHandler.getAllPlayerInfos().then((response) => {
      console.log(response);
-    players.value = response;
+    allPlayers.value = response;
+    filterPlayers();
    });
 
   showCreatePlayerForm.value = false;
@@ -100,7 +120,8 @@ onBeforeMount(async () => {
   await ApiHandler.getAllPlayerInfos().then((response) => {
     console.log(response);
 
-    players.value = response;
+    allPlayers.value = response;
+    filterPlayers();
   });
 
 });
