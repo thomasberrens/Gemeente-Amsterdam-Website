@@ -9,7 +9,7 @@ export default class DeletePlayerForm implements Form{
 
     submitButtonText: string;
     title: string;
-    visible: boolean = false;
+    visible: boolean = true;
 
     playerInfo: PlayerInfo;
 

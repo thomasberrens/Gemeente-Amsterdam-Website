@@ -5,7 +5,7 @@
 
       <div class="flex flex-wrap justify-between mb-4">
         <div class="mb-2 md:mb-0 flex-grow w-full md:w-auto">
-          <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-lg transition-colors duration-300 w-full md:w-auto" @click="createPlayerForm.visible = true">
+          <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-lg transition-colors duration-300 w-full md:w-auto" @click="formStore.setForm(new CreatePlayerForm())">
             Create Player
           </button>
         </div>
@@ -41,8 +41,6 @@
 
     <NotificationComponent :notification="notificationState.notification"/>
   </div>
-  <FormView :form="createPlayerForm"></FormView>
-  <FormView v-if="!!deletePlayerForm" :form="deletePlayerForm"></FormView>
 <!--  <CreatePlayerForm :visible="showCreatePlayerForm" @close="updatePlayers" @update="showNotification" ></CreatePlayerForm>-->
 </template>
 
@@ -63,6 +61,7 @@ import Form from "@/store/form/Form";
 import DeletePlayerForm from "@/store/form/DeletePlayerForm";
 import playerInfo from "@/api/records/PlayerInfo";
 import DeletedPlayerNotification from "@/store/notification/DeletedPlayerNotification";
+import {useFormStore} from "@/store/form/FormStore";
 
 
 const router = useRouter();
@@ -70,6 +69,8 @@ const router = useRouter();
 const notificationState = reactive({
   notification: null as Notification | null
 });
+
+const formStore = useFormStore();
 
 const createPlayerForm = ref(new CreatePlayerForm());
 

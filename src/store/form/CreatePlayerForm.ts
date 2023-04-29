@@ -9,7 +9,7 @@ export default class CreatePlayerForm implements Form {
     description: string;
     inputFields: InputField[];
     submitButtonText: string;
-    visible: boolean = false;
+    visible: boolean = true;
 
     onPlayerCreated: (playerInfo: PlayerInfo) => void;
 
