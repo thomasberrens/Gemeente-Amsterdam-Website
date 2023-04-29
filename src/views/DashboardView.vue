@@ -156,10 +156,6 @@ onBeforeMount(async () => {
     allPlayers.value = response;
     filterPlayers();
   });
-
-  createPlayerForm.value.onPlayerCreated = onPlayerCreated;
-
-
 });
 
 </script>
