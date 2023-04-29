@@ -30,7 +30,7 @@
               <button class="bg-red-500 p-1 rounded inline-flex items-center mr-4" @click="createDeletePlayerForm(value)">
                 <TrashIcon class="h-4 w-4" />
               </button>
-              <button class="bg-orange-300 p-1 rounded inline-flex items-center">
+              <button class="bg-orange-300 p-1 rounded inline-flex items-center" @click="createEditPlayerForm(value)">
                 <PencilIcon class="h-4 w-4" />
               </button>
             </div>
@@ -61,6 +61,8 @@ import playerInfo from "@/api/records/PlayerInfo";
 import DeletedPlayerNotification from "@/store/notification/DeletedPlayerNotification";
 import {useFormStore} from "@/store/form/FormStore";
 import {useNotificationStore} from "@/store/notification/NotificationStore";
+import EditPlayerForm from "@/store/form/EditPlayerForm";
+import EditedPlayerNotification from "@/store/notification/EditedPlayerNotification";
 
 
 const router = useRouter();
@@ -93,6 +95,19 @@ const setPlayerCreateForm = () => {
     newCreatePlayerForm.onPlayerCreated = onPlayerCreated;
 
     formStore.setForm(newCreatePlayerForm);
+}
+
+const createEditPlayerForm = (playerInfo: PlayerInfo) => {
+  const newEditPlayerForm = new EditPlayerForm(playerInfo);
+
+  newEditPlayerForm.onPlayerEdited = onPlayerEdited;
+  formStore.setForm(newEditPlayerForm);
+};
+
+const onPlayerEdited = (newPlayerInfo: PlayerInfo, oldPlayerInfo: PlayerInfo) => {
+  updatePlayers();
+
+  showNotification(new EditedPlayerNotification(newPlayerInfo, oldPlayerInfo, router));
 }
 
 const createDeletePlayerForm = (playerInfo: PlayerInfo) => {
