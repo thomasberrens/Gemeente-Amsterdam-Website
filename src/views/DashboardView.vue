@@ -5,7 +5,7 @@
 
       <div class="flex flex-wrap justify-between mb-4">
         <div class="mb-2 md:mb-0 flex-grow w-full md:w-auto">
-          <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-lg transition-colors duration-300 w-full md:w-auto" @click="formStore.setForm(new CreatePlayerForm())">
+          <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-lg transition-colors duration-300 w-full md:w-auto" @click="setPlayerCreateForm">
             Create Player
           </button>
         </div>
@@ -72,11 +72,6 @@ const notificationState = reactive({
 
 const formStore = useFormStore();
 
-const createPlayerForm = ref(new CreatePlayerForm());
-
-const deletePlayerForm = ref<DeletePlayerForm | undefined>(undefined);
-
-
 const allPlayers = ref<PlayerInfo[]>([]);
 const displayedPlayers = ref<PlayerInfo[]>([]);
 const searchInput = ref<string>('');
@@ -90,23 +85,32 @@ const filterPlayers = () => {
   }
 };
 
+const onPlayerCreated = (playerInfo: PlayerInfo) => {
+    updatePlayers();
+    showNotification(new CreatedPlayerNotification(playerInfo, router));
+}
+
+const setPlayerCreateForm = () => {
+    const newCreatePlayerForm = new CreatePlayerForm();
+
+    newCreatePlayerForm.onPlayerCreated = onPlayerCreated;
+
+    formStore.setForm(newCreatePlayerForm);
+}
+
 const createDeletePlayerForm = (playerInfo: PlayerInfo) => {
   const newDeletePlayerForm = new DeletePlayerForm(playerInfo);
 
-  deletePlayerForm.value = newDeletePlayerForm;
-
   newDeletePlayerForm.onDelete = onPlayerDelete;
 
-  // this is necessary to trigger the reactivity of the deletePlayerForm
-  //@ts-ignore
-  newDeletePlayerForm.onFormClosed = () => deletePlayerForm.value.visible = false;
+  formStore.setForm(newDeletePlayerForm);
 
-  newDeletePlayerForm.visible = true;
 };
 
 const onPlayerDelete = (playerInfo: PlayerInfo) => {
   updatePlayers();
-  deletePlayerForm.value = undefined;
+
+  formStore.clearForm();
 
   showNotification(new DeletedPlayerNotification(playerInfo));
 }
@@ -129,12 +133,6 @@ const showNotification = (notification: Notification) => {
     closeNotification();
   }, 4000);
 };
-
-
-const onPlayerCreated = (playerInfo: PlayerInfo) => {
-  updatePlayers();
-  showNotification(new CreatedPlayerNotification(playerInfo, router));
-}
 
 const goToPlayerView = (uuid: string) => {
   router.push(RouteTypes.PLAYER.path.replace(":uuid", uuid));

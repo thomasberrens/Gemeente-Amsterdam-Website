@@ -25,7 +25,6 @@ export default class CreatePlayerForm implements Form {
     }
 
     onClose() {
-        console.log("????")
        this.visible = false;
        this.inputFields[0].model = "";
     }

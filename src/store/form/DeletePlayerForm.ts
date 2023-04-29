@@ -13,8 +13,7 @@ export default class DeletePlayerForm implements Form{
 
     playerInfo: PlayerInfo;
 
-    constructor(playerInfo?: PlayerInfo) {
-        if (!playerInfo) return;
+    constructor(playerInfo: PlayerInfo) {
         this.title = "Delete Player";
         this.description = `Are you sure you want to delete ${playerInfo.username}? This is a destructive action.`;
 
@@ -22,21 +21,12 @@ export default class DeletePlayerForm implements Form{
 
         this.playerInfo = playerInfo;
 
-        // Set visible to true only when playerInfo object is not empty
-        if (playerInfo && playerInfo.uuid) {
-            this.visible = true;
-        }
-
     }
 
     onDelete: (playerInfo: PlayerInfo) => void;
 
-    onFormClosed: () => void;
-
     onClose(): void {
-
         this.visible = false;
-        this.onFormClosed();
     }
 
     onSubmit(): void {

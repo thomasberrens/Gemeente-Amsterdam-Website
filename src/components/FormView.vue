@@ -40,6 +40,7 @@ const onSubmit = () => {
   //form.onSubmit();
 
     form.getCurrentForm?.onSubmit();
+    closeForm();
 }
 
 onBeforeMount(() => {
