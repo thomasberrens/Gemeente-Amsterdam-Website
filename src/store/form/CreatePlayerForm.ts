@@ -42,8 +42,5 @@ export default class CreatePlayerForm implements Form {
         }).catch((error) => {
             console.log(error);
         });
-
-        this.onClose();
     }
-
 }

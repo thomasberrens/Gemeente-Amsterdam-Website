@@ -38,8 +38,6 @@
         </div>
       </div>
     </div>
-
-    <NotificationComponent :notification="notificationState.notification"/>
   </div>
 <!--  <CreatePlayerForm :visible="showCreatePlayerForm" @close="updatePlayers" @update="showNotification" ></CreatePlayerForm>-->
 </template>
@@ -62,15 +60,14 @@ import DeletePlayerForm from "@/store/form/DeletePlayerForm";
 import playerInfo from "@/api/records/PlayerInfo";
 import DeletedPlayerNotification from "@/store/notification/DeletedPlayerNotification";
 import {useFormStore} from "@/store/form/FormStore";
+import {useNotificationStore} from "@/store/notification/NotificationStore";
 
 
 const router = useRouter();
 
-const notificationState = reactive({
-  notification: null as Notification | null
-});
-
 const formStore = useFormStore();
+
+const notificationStore = useNotificationStore();
 
 const allPlayers = ref<PlayerInfo[]>([]);
 const displayedPlayers = ref<PlayerInfo[]>([]);
@@ -110,28 +107,13 @@ const createDeletePlayerForm = (playerInfo: PlayerInfo) => {
 const onPlayerDelete = (playerInfo: PlayerInfo) => {
   updatePlayers();
 
-  formStore.clearForm();
-
   showNotification(new DeletedPlayerNotification(playerInfo));
 }
 
 
-const closeNotification = () => {
-  const notification = notificationState.notification;
-
-  if (notification) {
-    notification.visible = false;
-  }
-
-  // notificationState.notification = null;
-};
 
 const showNotification = (notification: Notification) => {
-  notificationState.notification = notification;
-
-  setTimeout(() => {
-    closeNotification();
-  }, 4000);
+  notificationStore.setNotification(notification);
 };
 
 const goToPlayerView = (uuid: string) => {

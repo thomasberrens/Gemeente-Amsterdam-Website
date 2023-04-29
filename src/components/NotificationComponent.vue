@@ -1,15 +1,15 @@
 <template>
   <transition name="slide-fade">
     <div
-        v-if="!!notification && notification.visible"
+        v-if="notificationStore.isNotificationVisible"
         :class="[
         'fixed top-4 right-4 p-4 rounded-lg shadow-md cursor-pointer text-white',
-        notificationTypes.get(notification.type),
+        notificationTypes.get(<NotificationType> notificationStore.getNotificationType),
       ]"
-        @click="notification.onClick()"
+        @click="notificationStore.getCurrentNotification?.onClick"
     >
-      <h1 class="text-lg font-bold mb-1">{{ notification.title }}</h1>
-      <div v-for="label in notification.labels" :key="label" class="text-sm text-gray-100">
+      <h1 class="text-lg font-bold mb-1">{{ notificationStore.getNotificationTitle }}</h1>
+      <div v-for="label in notificationStore.getNotificationLabels" :key="label" class="text-sm text-gray-100">
         <p>{{ label }}</p>
       </div>
     </div>
@@ -21,12 +21,10 @@
 import {computed, onMounted, ref} from "vue";
 import Notification from "@/store/notification/Notification";
 import NotificationType from "@/store/notification/NotificationType";
+import {useNotificationStore} from "@/store/notification/NotificationStore";
 
-interface Props {
-  notification: Notification;
-}
+const notificationStore = useNotificationStore();
 
-const {notification} = defineProps<Props>();
 
 const emit = defineEmits(["onClick"]);
 
