@@ -42,10 +42,6 @@ const ApiHandler = new class {
         };
     }
 
-    public async getChoicesMade(): Promise<Choice[]> {
-        return this.sendGetRequest<Choice[]>(ApiRoutes.GET_ALL_CHOICES)
-    }
-
     public async getAllPlayerInfos(): Promise<PlayerInfo[]> {
         return this.sendGetRequest<PlayerInfo[]>(ApiRoutes.GET_ALL_PLAYERS);
     }
@@ -60,10 +56,6 @@ const ApiHandler = new class {
 
     async postLogin(email: string, password: string): Promise<AuthenticationToken> {
         return this.sendPostRequest<AuthenticationToken>(ApiRoutes.LOGIN,{username: email, password: password}, true);
-    }
-
-    public async getAllUsersChoicesMade(): Promise<Map<string, Choice[]>> {
-        return this.sendGetRequest<Map<string, Choice[]>>(ApiRoutes.GET_ALL_USERS_CHOICES)
     }
 
     public async handleAuthentication(onSuccesfull: any, onError: any): Promise<void> {

@@ -39,7 +39,6 @@
       </div>
     </div>
   </div>
-<!--  <CreatePlayerForm :visible="showCreatePlayerForm" @close="updatePlayers" @update="showNotification" ></CreatePlayerForm>-->
 </template>
 
 <script setup lang="ts">

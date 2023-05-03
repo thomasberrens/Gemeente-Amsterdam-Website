@@ -23,6 +23,7 @@
 import Form from "@/store/form/Form";
 import {onBeforeMount} from "vue";
 import {useFormStore} from "@/store/form/FormStore";
+import InputField from "@/store/form/InputField";
 
 const form = useFormStore();
 
