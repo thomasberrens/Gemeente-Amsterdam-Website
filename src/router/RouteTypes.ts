@@ -8,6 +8,21 @@ const RouteTypes = new class {
         name: "Home",
         path: ""
     };
+
+    DASHBOARD: Route = {
+        name: "Dashboard",
+        path: "/dashboard"
+    };
+
+    LOGIN: Route = {
+        name: "Login",
+        path: "/login"
+    }
+
+    PLAYER: Route = {
+        name: "Player",
+        path: "/player/:uuid"
+    }
 }
 
 export {RouteTypes};
