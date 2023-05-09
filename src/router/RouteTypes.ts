@@ -23,6 +23,10 @@ const RouteTypes = new class {
         name: "Player",
         path: "/player/:uuid"
     }
+    GAME: Route = {
+        name: "Game",
+        path: "/game"
+    }
 }
 
 export {RouteTypes};

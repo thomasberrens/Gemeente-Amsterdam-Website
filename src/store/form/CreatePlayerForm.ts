@@ -11,7 +11,7 @@ export default class CreatePlayerForm implements Form {
     submitButtonText: string;
     visible: boolean = true;
 
-    onPlayerCreated: (playerInfo: PlayerInfo) => void;
+    onPlayerCreated: (playerInfo: PlayerInfo) => void = () => {};
 
     constructor() {
         this.title = "Create Player";

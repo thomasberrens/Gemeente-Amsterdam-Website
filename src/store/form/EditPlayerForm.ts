@@ -13,7 +13,7 @@ export default class EditPlayerForm implements Form {
 
     playerInfo: PlayerInfo;
 
-    onPlayerEdited: (newPlayerInfo: PlayerInfo, oldPlayerInfo: PlayerInfo) => void;
+    onPlayerEdited: (newPlayerInfo: PlayerInfo, oldPlayerInfo: PlayerInfo) => void = () => {};
 
     constructor(playerInfo: PlayerInfo) {
         this.playerInfo = playerInfo;

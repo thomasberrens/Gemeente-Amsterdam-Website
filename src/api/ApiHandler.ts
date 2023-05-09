@@ -37,6 +37,7 @@ const ApiHandler = new class {
     }
 
     private createContentTypeRequestHeader(urlEncoded = false): AxiosRequestHeaders {
+        // @ts-ignore
         return {
             "Content-Type": urlEncoded ? urlEncodedHeader : jsonHeader,
         };
