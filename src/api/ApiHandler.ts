@@ -139,7 +139,7 @@ const ApiHandler = new class {
 
 
     public getBaseUrl () {
-        return "http://localhost:8080/"
+        return "https://gemeente-amsterdam-api-spring-api.azuremicroservices.io/"
     }
 }
 
