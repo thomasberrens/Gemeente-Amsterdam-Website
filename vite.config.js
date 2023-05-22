@@ -7,7 +7,7 @@ import viteSvgLoader from 'vite-svg-loader';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue(), vueJSX(), viteSvgLoader()],
-
+  envDir: 'env',
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),

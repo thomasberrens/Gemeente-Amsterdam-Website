@@ -25,9 +25,9 @@ onMounted(() => {
         frameworkUrl: "Build/WEBGL.framework.js",
         codeUrl: "Build/WEBGL.wasm",
         streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "UnityWebgl",
-        productVersion: "0.1",
+        companyName: "Security Amsterdam",
+        productName: "Security Amsterdam",
+        productVersion: "1.0",
         matchWebGLToCanvasSize: true,
         devicePixelRatio: 1,
     });
