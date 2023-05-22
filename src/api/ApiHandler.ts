@@ -139,7 +139,17 @@ const ApiHandler = new class {
 
 
     public getBaseUrl () {
-        return "https://gemeente-amsterdam-api-spring-api.azuremicroservices.io/"
+
+        let apiHost = import.meta.env.VITE_APP_API_HOST;
+
+        if (!apiHost)
+            throw new Error("Api host not set");
+
+        if (!apiHost.endsWith("/"))
+            apiHost += "/";
+
+
+        return apiHost;
     }
 }
 
