@@ -18,12 +18,15 @@ onMounted(() => {
 
     console.log("unity canvas", unityCanvas.value)
 
+    const prefix = import.meta.env.VITE_UNITY_BUILD_ID;
+
+
     // 1. Initialize the unity configuration
     unityContext = new UnityWebgl({
-        loaderUrl: "Build/WEBGL.loader.js",
-        dataUrl: "Build/WEBGL.data",
-        frameworkUrl: "Build/WEBGL.framework.js",
-        codeUrl: "Build/WEBGL.wasm",
+        loaderUrl: "Build/" + prefix + ".loader.js",
+        dataUrl: "Build/" + prefix + ".data",
+        frameworkUrl: "Build/" + prefix + ".framework.js",
+        codeUrl: "Build/" + prefix + ".wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "Security Amsterdam",
         productName: "Security Amsterdam",
