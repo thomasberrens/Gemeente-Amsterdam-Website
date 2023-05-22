@@ -5,7 +5,7 @@ import PlayerInfo from "@/api/records/PlayerInfo";
 
 export default class DeletePlayerForm implements Form{
     description: string;
-    inputFields: InputField[];
+    inputFields: InputField[] = [];
 
     submitButtonText: string;
     title: string;
@@ -23,7 +23,7 @@ export default class DeletePlayerForm implements Form{
 
     }
 
-    onDelete: (playerInfo: PlayerInfo) => void;
+    onDelete: (playerInfo: PlayerInfo) => void = () => {};
 
     onClose(): void {
         this.visible = false;

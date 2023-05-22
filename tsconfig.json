@@ -26,11 +26,10 @@
       "webpack-env",
       "jest",
       "vite/client",
-      "vue-property-decorator"
     ],
     "paths": {
       "@/*": [
-        "src/*"
+        "src/*",
       ]
     },
     "lib": [

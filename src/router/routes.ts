@@ -10,6 +10,11 @@ export default [
     }
   },
   {
+    path: RouteTypes.GAME.path,
+    name: RouteTypes.GAME.name,
+    component: () => import("@/views/game/GameView.vue"),
+  },
+  {
     path: RouteTypes.DASHBOARD.path,
     name: RouteTypes.DASHBOARD.name,
     component: () => import("@/views/DashboardView.vue"),

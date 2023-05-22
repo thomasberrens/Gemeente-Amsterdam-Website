@@ -9,6 +9,7 @@ export const useNotificationStore = defineStore({
     }),
     actions: {
         clearNotification() {
+            if (!this.currentNotification) return;
             this.currentNotification.visible = false;
 
             // Wait for the animation to finish before clearing the notification.
