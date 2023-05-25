@@ -5,7 +5,7 @@
       <div class="bg-white p-8 rounded shadow-lg relative transition-opacity">
         <h2 class="text-2xl font-bold mb-4">{{form.getFormTitle}}</h2>
         <label>{{form.getFormDescription}}</label>
-        <form>
+        <form @submit.prevent="onSubmit">
           <div class="mb-4" v-for="inputField in form.getFormInputFields as InputField[]" :key="inputField">
             <label class="block mb-2" :for="inputField.name">{{inputField.name}}</label>
             <input class="border border-gray-300 p-2 w-full" type="text" :placeholder="inputField.placeholder" :id="inputField.name" v-model="inputField.model" required />
