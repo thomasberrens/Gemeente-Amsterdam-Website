@@ -16,8 +16,6 @@ onMounted(() => {
 
     unityCanvas.value = document.querySelector("#unity-canvas")
 
-    console.log("unity canvas", unityCanvas.value)
-
     const prefix = import.meta.env.VITE_UNITY_BUILD_ID;
 
 

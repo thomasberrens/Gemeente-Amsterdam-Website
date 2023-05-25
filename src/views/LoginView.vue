@@ -44,24 +44,27 @@ import ApiHandler from "@/api/ApiHandler";
 import {useAuthStore} from "@/store/AuthStore";
 import {useRouter} from "vue-router";
 import {RouteTypes} from "@/router/RouteTypes";
+import {useNotificationStore} from "@/store/notification/NotificationStore";
+import notification from "@/store/notification/Notification";
+import AuthFailedNotification from "@/store/notification/AuthFailedNotification";
 
 const authStore = useAuthStore();
 
 const router = useRouter();
+
+const notificationStore = useNotificationStore();
 
 const email = ref('');
 const password = ref('');
 
 const login = async () => {
 
-  console.log("sending: " + email.value + ", pass: " + password.value);
-
   ApiHandler.postLogin(email.value, password.value).then((response) => {
-    console.log("got: ", response)
-
     authStore.setTokenFromAuth(response);
-
     router.push({name: RouteTypes.DASHBOARD.name})
+  }).catch((error) => {
+    notificationStore.setNotification(new AuthFailedNotification());
+
   });
 
 };

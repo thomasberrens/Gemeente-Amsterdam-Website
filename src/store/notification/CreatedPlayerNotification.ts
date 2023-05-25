@@ -9,7 +9,7 @@ export default class CreatedPlayerNotification implements Notification {
 
     labels: string[] = ["Name: {0}", "PlayerID: {0}"];
     title: string = "Created player.";
-    type: NotificationType = NotificationType.SUCCESS;
+    type: NotificationType = NotificationType.GREEN;
     visible: boolean = true;
 
     playerId: string = "";
@@ -27,9 +27,6 @@ export default class CreatedPlayerNotification implements Notification {
     }
 
     onClick(): void {
-
-        console.log("router, ", this.router)
-
         this.router.push(RouteTypes.PLAYER.path.replace(":uuid", this.playerId));
     }
 
