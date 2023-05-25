@@ -1,8 +1,7 @@
-// enum
 enum NotificationType {
-    SUCCESS = 'success',
-    DELETED = 'deleted',
-    EDITED = 'edited',
+    GREEN = 'green',
+    RED = 'red',
+    ORANGE = 'orange',
 }
 
 export default NotificationType;

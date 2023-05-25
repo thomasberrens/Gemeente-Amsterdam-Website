@@ -7,7 +7,7 @@ import {RouteTypes} from "@/router/RouteTypes";
 export default class EditedPlayerNotification implements Notification {
     labels: string[];
     title: string;
-    type: NotificationType = NotificationType.EDITED;
+    type: NotificationType = NotificationType.ORANGE;
     visible: boolean;
 
     router: Router;

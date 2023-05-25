@@ -69,7 +69,6 @@ const options = {
 };
 
 onMounted(() => {
-  console.log("MOUNTING CHOICEGRAPH")
   if (chart.value) {
     console.log("has ref value")
 

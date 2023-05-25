@@ -29,9 +29,9 @@ const notificationStore = useNotificationStore();
 const emit = defineEmits(["onClick"]);
 
 const notificationTypes = new Map<NotificationType, string>([
-  [NotificationType.SUCCESS, "bg-green-500"],
-  [NotificationType.DELETED, "bg-red-500"],
-  [NotificationType.EDITED, "bg-yellow-500"],
+  [NotificationType.GREEN, "bg-green-500"],
+  [NotificationType.RED, "bg-red-500"],
+  [NotificationType.ORANGE, "bg-yellow-500"],
 ]);
 
 

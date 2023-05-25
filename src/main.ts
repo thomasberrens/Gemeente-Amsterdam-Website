@@ -16,7 +16,6 @@ app.mount('#app')
 
 
 router.beforeEach((to, from, next) => {
-    console.log("hallo?>")
 
     if (to.meta.auth) {
         const onSuccesfullAuth = () => {

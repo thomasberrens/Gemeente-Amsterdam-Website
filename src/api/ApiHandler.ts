@@ -26,6 +26,7 @@ const ApiHandler = new class {
 
                 config.headers['Access-Control-Allow-Origin'] = '*';
 
+
                 const authStore = useAuthStore();
 
                 if (authStore.isAuthenticated)
